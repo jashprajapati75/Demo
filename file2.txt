@@ -1,3 +1,472 @@
-hello file2
-hello file22
-hello from master1
+import React, { useState } from "react";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Input,
+  Form,
+  FormGroup,
+  Label,
+} from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { useTranslation } from "react-i18next";
+
+function Workspace() {
+  const { t } = useTranslation();
+  const [workspaceArr, setWorkspaceArr] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [workspaceDetail, setWorkspaceDetail] = useState({
+    name: "",
+    website: "",
+  });
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [modal, setModal] = useState(false);
+
+  const handleSearchQueryChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleChange = (e) => {
+    setWorkspaceDetail((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const toggle1 = () => setModal(!modal);
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
+
+  const handleClick = () => {
+    setWorkspaceArr((pData) => [...pData, workspaceDetail]);
+    toggle1();
+    setWorkspaceDetail({
+      name: "",
+      website: "",
+    });
+  };
+
+  const handleSelected = (w) => {
+    setSelectedItem(w.name);
+  };
+
+  const filterWorkspace = workspaceArr.filter((ws) =>
+    ws.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <>
+      <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+        <DropdownToggle
+          caret={false}
+          size="lg"
+          className="bg-white text-dark w-100 d-flex align-items-center justify-content-between border-primary border-2"
+        >
+          <div className="d-flex align-items-center gap-2 ">
+            <div className="bg-primary bg-opacity-25 ps-2 pe-2 p-1 border border-primary rounded text-primary">
+              <h3 className="" style={{ minWidth: "2rem", minHeight: "1rem" }}>
+                {selectedItem ? selectedItem[0]?.toUpperCase() : "W"}
+              </h3>
+            </div>
+            <span className="fw-bold">{selectedItem || t("workspace")}</span>
+          </div>
+
+          <span className="dropdown-caret">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              className="bi bi-arrow-down-up"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fillRule="evenodd"
+                d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5"
+              />
+            </svg>
+          </span>
+        </DropdownToggle>
+        <DropdownMenu
+          className="position-absolute"
+          style={{ minWidth: "30rem", marginTop: "5rem" }}
+        >
+          <DropdownItem header>
+            <div className="position-relative">
+              <Input
+                type="text"
+                placeholder={t("search")}
+                name="search"
+                value={searchQuery}
+                onChange={handleSearchQueryChange}
+                className="ps-5"
+              />
+              <i
+                className="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"
+                style={{ pointerEvents: "none" }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  className="bi bi-search"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                </svg>
+              </i>
+            </div>
+          </DropdownItem>
+          {filterWorkspace.length > 0
+            ? filterWorkspace.map((Workspace, index) => (
+                <DropdownItem
+                  key={Workspace.name}
+                  onClick={() => handleSelected(Workspace)}
+                  className={
+                    selectedItem === Workspace.name
+                      ? "bg-primary text-black bg-opacity-25 border border-primary p-3 rounded"
+                      : `p-3 ${index % 2 === 0 ? "bg-light" : ""}`
+                  }
+                >
+                  <div className="d-flex w-100 align-items-center justify-content-between">
+                    <div className="d-flex align-items-center">
+                      <div
+                        className="bg-primary bg-opacity-25 border border-primary rounded text-primary d-flex justify-content-center align-items-center"
+                        style={{ width: "2.5rem", height: "2.5rem" }}
+                      >
+                        <h3 className="mb-0">{Workspace.name[0].toUpperCase()}</h3>
+                      </div>
+                      &nbsp;&nbsp;
+                      <div>{Workspace.name}</div>
+                    </div>
+                    {selectedItem === Workspace.name && (
+                      <span className="text-success fw-bold">&#10003;</span>
+                    )}
+                  </div>
+                </DropdownItem>
+              ))
+            : <DropdownItem disabled>{t("noWorkspaces")}</DropdownItem>}
+          <DropdownItem divider />
+          <DropdownItem>
+            <div>
+              <Button
+                color="white"
+                onClick={toggle1}
+                className="border w-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  className="bi bi-plus-square-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0" />
+                </svg>
+                &nbsp;&nbsp; {t("createNewWorkspace")}
+              </Button>
+              <Modal isOpen={modal} fade={false} toggle={toggle1}>
+                <ModalHeader toggle={toggle1}>{t("newWorkspace")}</ModalHeader>
+                <ModalBody>
+                  <Form>
+                    <FormGroup>
+                      <Label for="name">{t("email")}</Label>
+                      <Input
+                        id="name"
+                        name="name"
+                        placeholder=""
+                        type="text"
+                        value={workspaceDetail.name}
+                        onChange={handleChange}
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="website">{t("workspaceOptional")}</Label>
+                      <Input
+                        id="website"
+                        name="website"
+                        placeholder=""
+                        type="text"
+                        value={workspaceDetail.website}
+                        onChange={handleChange}
+                      />
+                    </FormGroup>
+                  </Form>
+                  <div className="bg-light border border-primary rounded d-flex justify-content-center align-items-center ">
+                    <div className="bg-primary bg-opacity-25 m-5 p-3 ps-4 pe-4 border border-primary rounded text-primary">
+                      <h3 className="mb-0">
+                        {workspaceDetail.name.length !== 0
+                          ? workspaceDetail.name[0]?.toUpperCase()
+                          : "W"}
+                      </h3>
+                    </div>
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="white" onClick={toggle1}>
+                    {t("cancel")}
+                  </Button>{" "}
+                  <Button color="dark" onClick={handleClick}>
+                    {t("create")}
+                  </Button>
+                </ModalFooter>
+              </Modal>
+            </div>
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    </>
+  );
+}
+
+export default Workspace;
+
+
+
+__________________________________________________________________________________________________
+
+Great! Here's a starter setup for your **`en.json`** and **`hi.json`** translation files for the Workspace component.
+
+---
+
+### `public/locales/en/translation.json`
+```json
+{
+  "workspace": "Workspace",
+  "search": "Search",
+  "noWorkspaces": "No workspaces found",
+  "createNewWorkspace": "Create New Workspace",
+  "newWorkspace": "New Workspace",
+  "email": "Email",
+  "workspaceOptional": "Workspace (optional)",
+  "cancel": "Cancel",
+  "create": "Create"
+}
+```
+
+---
+
+### `public/locales/hi/translation.json`
+```json
+{
+  "workspace": "कार्यस्थान",
+  "search": "खोजें",
+  "noWorkspaces": "कोई कार्यस्थान नहीं मिला",
+  "createNewWorkspace": "नया कार्यस्थान बनाएं",
+  "newWorkspace": "नया कार्यस्थान",
+  "email": "ईमेल",
+  "workspaceOptional": "कार्यस्थान (वैकल्पिक)",
+  "cancel": "रद्द करें",
+  "create": "बनाएं"
+}
+```
+
+---
+
+### Folder Structure
+Make sure your folder structure is:
+```
+public/
+  locales/
+    en/
+      translation.json
+    hi/
+      translation.json
+```
+
+You can now switch languages in your app by calling:
+```js
+i18n.changeLanguage('hi'); // or 'en'
+```
+
+Let me know if you’d like to build a language switcher component too!
+
+
+__________________________________________________________________________________________________
+
+Great! Here's how to **use separate JSON files** for translations with `i18next` in your React project:
+
+---
+
+### **Step 1: Project Structure**
+Create a folder like this in `src`:
+```
+src/
+├── locales/
+│   ├── en/
+│   │   └── translation.json
+│   ├── fr/
+│   │   └── translation.json
+├── i18n.js
+```
+
+---
+
+### **Step 2: Add translation JSON**
+**`src/locales/en/translation.json`**
+```json
+{
+  "welcome": "Welcome",
+  "createWorkspace": "Create Workspace"
+}
+```
+
+**`src/locales/fr/translation.json`**
+```json
+{
+  "welcome": "Bienvenue",
+  "createWorkspace": "Créer un espace de travail"
+}
+```
+
+---
+
+### **Step 3: Setup `i18n.js`**
+```js
+// src/i18n.js
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import HttpApi from 'i18next-http-backend';
+
+i18n
+  .use(HttpApi)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: 'en',
+    debug: false,
+    interpolation: {
+      escapeValue: false,
+    },
+    backend: {
+      loadPath: '/locales/{{lng}}/translation.json',
+    },
+  });
+
+export default i18n;
+```
+
+---
+
+### **Step 4: Import i18n in entry point**
+In your `index.js` or `App.js`:
+```js
+import './i18n';
+```
+
+---
+
+### **Step 5: Use translations in components**
+```jsx
+import { useTranslation } from 'react-i18next';
+
+function MyComponent() {
+  const { t, i18n } = useTranslation();
+
+  return (
+    <div>
+      <h1>{t('welcome')}</h1>
+      <button onClick={() => i18n.changeLanguage('en')}>EN</button>
+      <button onClick={() => i18n.changeLanguage('fr')}>FR</button>
+    </div>
+  );
+}
+```
+
+---
+
+Let me know if you want to apply this setup in your current Workspace dropdown or use language switching globally.
+
+
+__________________________________________________________________________________________________
+
+Perfect! Here’s how you can **integrate `i18next` into your Workspace component** using separate JSON files:
+
+---
+
+### **1. Add Translation Keys**
+Update your `translation.json` files like this:
+
+**`locales/en/translation.json`**
+```json
+{
+  "workspace": "Workspace",
+  "search": "Search",
+  "createNewWorkspace": "Create New Workspace",
+  "newWorkspace": "New Workspace",
+  "email": "Email",
+  "optional": "Workspace (optional)",
+  "cancel": "Cancel",
+  "create": "Create workspace"
+}
+```
+
+**`locales/fr/translation.json`**
+```json
+{
+  "workspace": "Espace de travail",
+  "search": "Chercher",
+  "createNewWorkspace": "Créer un espace de travail",
+  "newWorkspace": "Nouvel espace de travail",
+  "email": "Email",
+  "optional": "Espace (optionnel)",
+  "cancel": "Annuler",
+  "create": "Créer un espace"
+}
+```
+
+---
+
+### **2. Update Workspace Component**
+
+At the top of `Workspace.js`, add:
+```js
+import { useTranslation } from 'react-i18next';
+```
+
+Inside your `Workspace` function:
+```js
+const { t } = useTranslation();
+```
+
+Then replace all hardcoded strings with `t(...)`:
+```jsx
+<span className="fw-bold">{selectedItem || t("workspace")}</span>
+...
+<DropdownItem header>
+  <Input placeholder={t("search")} ... />
+</DropdownItem>
+...
+<Button> {t("createNewWorkspace")} </Button>
+...
+<ModalHeader toggle={toggle1}>{t("newWorkspace")}</ModalHeader>
+...
+<Label for="exampleEmail">{t("email")}</Label>
+...
+<Label for="website">{t("optional")}</Label>
+...
+<Button color="white" onClick={toggle1}>{t("cancel")}</Button>
+<Button color="dark" onClick={handleClick}>{t("create")}</Button>
+```
+
+---
+
+### **3. Optional: Add Language Switcher**
+You can add a language selector at the top of your app or inside `Workspace`:
+
+```jsx
+<div className="mb-2">
+  <button onClick={() => i18n.changeLanguage('en')}>EN</button>
+  <button onClick={() => i18n.changeLanguage('fr')}>FR</button>
+</div>
+```
+
+---
+
+Done! Now your Workspace component supports multiple languages.
+
+Would you like help extracting all the relevant text into translation keys automatically?
