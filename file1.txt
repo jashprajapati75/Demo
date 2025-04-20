@@ -1,4 +1,176 @@
-hello file1
-hello 2
-hello from master
-hello1 from master
+import React, { useState } from "react";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Input,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+} from "reactstrap";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+function Workspace() {
+  const [workspaceArr, setWorkspaceArr] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [modal, setModal] = useState(false);
+
+  const toggleDropdown = () => setDropdownOpen((prev) => !prev);
+  const toggleModal = () => setModal((prev) => !prev);
+
+  const handleSearchQueryChange = (e) => setSearchQuery(e.target.value);
+  const handleSelected = (w) => setSelectedItem(w.name);
+
+  const handleCreateWorkspace = (data) => {
+    setWorkspaceArr((prev) => [...prev, data]);
+    toggleModal();
+  };
+
+  const filterWorkspace = workspaceArr.filter((ws) =>
+    ws.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <>
+      <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+        <DropdownToggle
+          caret={false}
+          size="lg"
+          className="bg-white text-dark w-100 d-flex align-items-center justify-content-between border-primary border-2"
+        >
+          <div className="d-flex align-items-center gap-2">
+            <div className="bg-primary bg-opacity-25 ps-2 pe-2 p-1 border border-primary rounded text-primary">
+              <h3 style={{ minWidth: "2rem", minHeight: "1rem" }}>
+                {selectedItem ? selectedItem[0]?.toUpperCase() : "W"}
+              </h3>
+            </div>
+            <span className="fw-bold">{selectedItem || "Workspace"}</span>
+          </div>
+          <span>
+            <i className="bi bi-arrow-down-up"></i>
+          </span>
+        </DropdownToggle>
+
+        <DropdownMenu style={{ minWidth: "30rem", marginTop: "5rem" }}>
+          <DropdownItem header>
+            <div className="position-relative">
+              <Input
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={handleSearchQueryChange}
+                className="ps-5"
+              />
+              <i className="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+            </div>
+          </DropdownItem>
+
+          {filterWorkspace.length > 0 ? (
+            filterWorkspace.map((Workspace) => (
+              <DropdownItem
+                key={Workspace.name}
+                onClick={() => handleSelected(Workspace)}
+                className={
+                  selectedItem === Workspace.name
+                    ? "bg-primary text-black bg-opacity-25 border border-primary p-3 rounded"
+                    : "p-3"
+                }
+              >
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="d-flex align-items-center gap-3">
+                    <div
+                      className="bg-primary bg-opacity-25 border border-primary rounded text-primary d-flex justify-content-center align-items-center"
+                      style={{ width: "2.5rem", height: "2.5rem" }}
+                    >
+                      <h3>{Workspace.name[0].toUpperCase()}</h3>
+                    </div>
+                    <div>{Workspace.name}</div>
+                  </div>
+                  {selectedItem === Workspace.name && (
+                    <span className="text-success">&#10003;</span>
+                  )}
+                </div>
+              </DropdownItem>
+            ))
+          ) : (
+            <DropdownItem disabled>No Workspaces</DropdownItem>
+          )}
+
+          <DropdownItem>
+            <Button color="white" onClick={toggleModal} className="border w-100">
+              <i className="bi bi-plus-square-fill"></i> &nbsp; Create New Workspace
+            </Button>
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+
+      <Modal isOpen={modal} toggle={toggleModal}>
+        <ModalHeader toggle={toggleModal}>New Workspace</ModalHeader>
+        <ModalBody>
+          <WorkspaceForm onSubmit={handleCreateWorkspace} onCancel={toggleModal} />
+        </ModalBody>
+      </Modal>
+    </>
+  );
+}
+
+const WorkspaceForm = ({ onSubmit, onCancel }) => {
+  const initialValues = {
+    name: "",
+    website: "",
+  };
+
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Workspace name is required"),
+    website: Yup.string().url("Invalid URL").nullable(),
+  });
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={(values, { resetForm }) => {
+        onSubmit(values);
+        resetForm();
+      }}
+    >
+      {({ values, isSubmitting, isValid }) => (
+        <Form>
+          <div className="mb-3">
+            <label className="form-label">Workspace Name</label>
+            <Field name="name" className="form-control" />
+            <ErrorMessage name="name" component="div" className="text-danger" />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Website (optional)</label>
+            <Field name="website" className="form-control" />
+            <ErrorMessage name="website" component="div" className="text-danger" />
+          </div>
+
+          <div className="bg-light border border-primary rounded d-flex justify-content-center align-items-center mb-3">
+            <div className="bg-primary bg-opacity-25 m-5 p-3 ps-4 pe-4 border border-primary rounded text-primary">
+              <h3>{values.name.length !== 0 ? values.name[0]?.toUpperCase() : "W"}</h3>
+            </div>
+          </div>
+
+          <div className="d-flex justify-content-end gap-2">
+            <Button color="light" onClick={onCancel}>
+              Cancel
+            </Button>
+            <Button color="dark" type="submit" disabled={!isValid || isSubmitting}>
+              Create Workspace
+            </Button>
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
+};
+
+export default Workspace;
