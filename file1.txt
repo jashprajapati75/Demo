@@ -1,2 +1,4 @@
 hello file1
 hello 2
+hello from master
+hello1 from master
