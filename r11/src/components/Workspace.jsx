@@ -82,7 +82,7 @@ function Workspace() {
         </DropdownToggle>
         <DropdownMenu
           className="position-absolute"
-          style={{ minWidth: "30rem", marginTop: "5rem" }}
+          style={{ minWidth: "30rem", marginTop: "0.5rem" }}
         >
           <DropdownItem header>
             <div className="position-relative">
