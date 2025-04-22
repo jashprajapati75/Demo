@@ -1,27 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Workspace from './components/Workspace'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import Workspace from "./components/Workspace";
 import { MdDashboard } from "react-icons/md";
+import Navbar1 from "./components/Assistants/Navbar1";
+import A from "./components/Assistants/A";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Index from "./components/Assistants/Index.jsx";
+import Teams from "./components/Assistants/Teams";
+import Layout from "./components/Assistants/Layout.jsx";
 
-function App() {
+export default function App() {
+  const router = createBrowserRouter([
+    {
+      path: '/assistants',
+      element: <Index />, 
+      children: [
+        {
+          index: true,
+          element: <A />
+        },
+        {
+          path: 'teams',
+          element: <Teams />
+        }
+      ]
+    }
+  ]);
+
   return (
-    <>
-    <div className='bg-body-secondary w-25 vh-100 '>
-     <ul className='list-group position-relative'>
-      <li className='mt-5 position-relative'><Workspace/></li>
-      <li>
-        <i></i>
-        Menu</li>
-      <li>
-        <i><MdDashboard />
-        </i>
-        Dashboard</li>
-     </ul>
-     </div>
-    </>
-  )
+    <RouterProvider router={router} />
+  );
 }
-
-export default App
