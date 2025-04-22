@@ -2,7 +2,10 @@ import React from 'react'
 import { Container, Button, Input } from "reactstrap";
 import { Link } from "react-router-dom";
 
-const Navbar1 = ({ searchQuery, handleSearchChange }) => {
+const Navbar1 = ({ searchQuery, setSearchQuery }) => {
+  const handleSearchChange = (e)=>{
+    setSearchQuery(e.target.value)
+  }
   return (
     <React.Fragment>
       <Container fluid>
