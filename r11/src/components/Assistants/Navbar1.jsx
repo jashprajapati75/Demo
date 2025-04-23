@@ -18,7 +18,7 @@ const Navbar1 = ({ searchQuery, setSearchQuery }) => {
               </Link>
             </div>
             <div className="border border-primary rounded-pill d-flex align-items-center ps-3 pe-3 bg-primary bg-opacity-10 text-weight-bold">
-              <Link className="nav-link fs-5" to="/teams">
+              <Link className="nav-link fs-5" to="/assistants/teams">
                 Teams
               </Link>
             </div>
