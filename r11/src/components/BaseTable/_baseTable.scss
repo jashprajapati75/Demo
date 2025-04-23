@@ -1,0 +1,22 @@
+table > thead > tr > th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .table-responsive {
+    position: relative;
+    overflow: auto;
+  }
+  .table-responsive::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .table-responsive::-webkit-scrollbar-track {
+    background: white;
+  }
+  .table-responsive::-webkit-scrollbar-thumb {
+    background-color: #ced4da;
+    border-radius: 25px;
+    border: 3px solid #ced4da;
+  }
+  

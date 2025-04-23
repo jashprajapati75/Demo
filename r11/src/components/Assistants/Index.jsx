@@ -5,6 +5,7 @@ import {
     Navbar,
   } from "reactstrap";
 import Navbar1 from './Navbar1';
+import AssistantsHeader from './Assistants/AssistantsHeader';
   
 function Index() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -13,7 +14,7 @@ function Index() {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Navbar1 searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+          <AssistantsHeader searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
             <Outlet context={{searchQuery}}/>
             </Container>
       </div>

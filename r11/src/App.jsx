@@ -8,8 +8,9 @@ import Navbar1 from "./components/Assistants/Navbar1";
 import A from "./components/Assistants/A";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Index from "./components/Assistants/Index.jsx";
-import Teams from "./components/Assistants/Teams";
+import Teams from "./components/Assistants/Assistants/Teams.jsx";
 import Layout from "./components/Assistants/Layout.jsx";
+import Assistants from "./components/Assistants/Assistants/Assistants.jsx";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -19,7 +20,7 @@ export default function App() {
       children: [
         {
           index: true,
-          element: <A />
+          element: <Assistants />
         },
         {
           path: 'teams',
