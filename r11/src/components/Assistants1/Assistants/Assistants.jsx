@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 import Navbar1 from "./AssistantsHeader";
 // import { Outlet } from "react-router-dom";
-import BaseTable from "../../BaseTable/index";
+import BaseTable from "../../BaseTable1";
 // import BaseTable from "../../Components/Common/BaseTable/index";
 // import BaseTable from "../../Components/Common/BaseTable";
 import { Outlet,useLocation } from 'react-router-dom'

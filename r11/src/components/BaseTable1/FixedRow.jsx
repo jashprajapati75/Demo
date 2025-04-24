@@ -57,16 +57,15 @@ const FixedRow = ({
 
         {columns.map((column, index) => (
           <td
-            className="py-3 px-3"
-            key={column.field || index}
+          className={`py-3 px-3 ${column.cellProps?.className ?? ""}`}
             {...(column.cellProps ?? {})}
           >
-            <div className={index==1&&"float-right ms-4"} >
+            {/* <div className={index==1&&"float-right ms-4"} > */}
             {column.field
               ? get(item, column.field) || "--"
               : column.renderCell &&
                 column.renderCell(item, rowIndex, page, perPage, ref)}
-                </div>
+                {/* </div> */}
           </td>
         ))}
       </tr>

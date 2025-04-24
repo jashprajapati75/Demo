@@ -122,7 +122,7 @@ const Pagination = ({
       {
         description: "<",
         onClick: previous,
-        isActive: page === 1,
+        isActive: page === 1, 
         isFirstOrLast: false,
         isArrowButton: true,
       },

@@ -13,10 +13,10 @@ import { useLocation } from "react-router-dom";
 // } from "../../../slices/healthrayApi";
 
 // import Loader from "../Loader";
-import Row from "./ScrolledRows";
-import FixedRow from "./FixedRow";
-import Pagination from "./Pagination";
-import PerPage from "./PerPage";
+import Row from "./ScrolledRows.jsx";
+import FixedRow from "./FixedRow.jsx";
+import Pagination from "./Pagination.jsx";
+import PerPage from "./PerPage.jsx";
 
 const valuesToFilterForQuery = [null, "", undefined];
 

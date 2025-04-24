@@ -2,19 +2,15 @@ import React from "react";
 import {
     Container,
   } from "reactstrap";
-import Navbar1 from "./AssistantsHeader";
   
 function Teams() {
   return (
     <React.Fragment>
-      {/* <div className="page-content"> */}
-          {/* <Navbar1/> */}
+      <div className="page-content">
         <Container fluid>
-            <div>
             teams
-            </div>
         </Container>
-      {/* </div> */}
+      </div>
     </React.Fragment>
   );
 }

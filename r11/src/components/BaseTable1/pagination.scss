@@ -1,0 +1,9 @@
+.mobile-pagination {
+    display: none;
+    @media only screen and (max-width: 576px) {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+  }
+  

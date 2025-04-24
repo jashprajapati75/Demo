@@ -1,0 +1,149 @@
+import React, { useState } from "react";
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+} from "reactstrap";
+
+const filterOptions = {
+  "Assistant Type": ["Bound", "Unbound", "Widget"],
+  "My Templates": ["Published", "Unpublished"],
+  "Voice Engine": ["Version 1.0", "Version 2.0"],
+};
+
+const FilterDropdown = () => {
+  const [selectedFilter, setSelectedFilter] = useState("Assistant Type");
+
+  const [selectedValues, setSelectedValues] = useState({
+    "Assistant Type": null,
+    "My Templates": null,
+    "Voice Engine": null,
+  });
+
+  const handleSubOptionClick = (main, sub) => {
+    setSelectedValues((prev) => ({
+      ...prev,
+      [main]: sub,
+    }));
+  };
+
+  const clearFilter = (filter) => {
+    setSelectedValues((prev) => ({
+      ...prev,
+      [filter]: null,
+    }));
+  };
+
+  const clearAllFilters = () => {
+    setSelectedValues({
+      "Assistant Type": null,
+      "My Templates": null,
+      "Voice Engine": null,
+    });
+  };
+
+  return (
+    <div className="position-relative d-inline-block">
+      {/* Dropdown */}
+      <UncontrolledDropdown direction="down">
+        <DropdownToggle caret color="primary">
+          <i className="ri-filter-line text-muted fs-4"></i>
+        </DropdownToggle>
+
+        <DropdownMenu
+          className="p-0"
+          style={{
+            width: "478px",
+            height: "198px",
+            position: "absolute",
+            top: "100%",
+            left: "-478px", // open to left
+            zIndex: 9999,
+          }}
+        >
+          <div className="d-flex h-100">
+            {/* Left side (main filter types) */}
+            <div
+              className="p-3"
+              style={{ width: "238px", height: "198px", overflowY: "auto" }}
+            >
+              {Object.keys(filterOptions).map((option) => (
+                <div
+                  key={option}
+                  onClick={() => setSelectedFilter(option)}
+                  className={`mb-2 cursor-pointer ${
+                    selectedFilter === option ? "fw-bold text-primary" : ""
+                  }`}
+                  style={{ cursor: "pointer" }}
+                >
+                  {option}
+                </div>
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div
+              style={{
+                width: "1px",
+                backgroundColor: "#dee2e6",
+                height: "198px",
+              }}
+            />
+
+            {/* Right side (sub-options) */}
+            <div
+              className="p-3"
+              style={{ width: "238px", height: "198px", overflowY: "auto" }}
+            >
+              {filterOptions[selectedFilter].map((subOption) => (
+                <div
+                  key={subOption}
+                  onClick={() => handleSubOptionClick(selectedFilter, subOption)}
+                  className="mb-2 cursor-pointer"
+                  style={{
+                    cursor: "pointer",
+                    fontWeight:
+                      selectedValues[selectedFilter] === subOption
+                        ? "bold"
+                        : "normal",
+                  }}
+                >
+                  {subOption}
+                </div>
+              ))}
+            </div>
+          </div>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+
+      {/* Selected Filters Summary */}
+      <div className="mt-3">
+        {Object.entries(selectedValues)
+          .filter(([_, value]) => value)
+          .map(([key, value]) => (
+            <span key={key} className="me-3">
+              <strong>{key}:</strong> {value}{" "}
+              <span
+                onClick={() => clearFilter(key)}
+                className="text-danger cursor-pointer"
+                style={{ fontSize: "1.2rem" }}
+              >
+                &times;
+              </span>
+            </span>
+          ))}
+
+        {Object.values(selectedValues).some((v) => v) && (
+          <button
+            className="btn btn-sm btn-outline-secondary ms-2"
+            onClick={clearAllFilters}
+          >
+            Clear All
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default FilterDropdown;

@@ -1,22 +1,25 @@
-import React,{useState} from 'react'
-import { Outlet } from 'react-router-dom'
+import React from 'react'
+import { Outlet,useLocation } from 'react-router-dom'
 import {
     Container,
     Navbar,
   } from "reactstrap";
-import Navbar1 from './Navbar1';
-import AssistantsHeader from './Assistants/AssistantsHeader';
+import AssistantsHeader from '../Assistants1/Assistants/AssistantsHeader';
+// import A from './Assistants';
+import Teams from '../Assistants1/Assistants/Teams';
+import Assistants from '../Assistants1/Assistants/Assistants';
   
 function Index() {
-  const [searchQuery, setSearchQuery] = useState("");
-
+const {pathname}=useLocation();
   return (
     <React.Fragment>
-      <div className="page-content">
+      <div className="mt-4">
         <Container fluid>
-          <AssistantsHeader searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
-            <Outlet context={{searchQuery}}/>
+          <AssistantsHeader/>
+          {pathname == '/assistants'&&<Assistants/>}
+          {pathname == '/assistants/teams'&&<Teams/>}
             </Container>
+
       </div>
     </React.Fragment>
   )
