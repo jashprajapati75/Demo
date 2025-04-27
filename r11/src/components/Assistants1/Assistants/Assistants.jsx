@@ -91,32 +91,32 @@ const data = [
 
 function Assistants() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [searchQuery, setSearchQuery] = useState("");
-  const totalPages = Math.ceil(data.length / rowsPerPage);
-  const indexOfLastItem = currentPage * rowsPerPage;
-  const indexOfFirstItem = indexOfLastItem - rowsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  // const [rowsPerPage, setRowsPerPage] = useState(10);
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const totalPages = Math.ceil(data.length / rowsPerPage);
+  // const indexOfLastItem = currentPage * rowsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - rowsPerPage;
+  // const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 const pathname=useLocation();
 console.log(pathname);
 
-  const handleRowsPerPageChange = (e) => {
-    setRowsPerPage(Number(e.target.value));
-    setCurrentPage(1); 
-  };
+  // const handleRowsPerPageChange = (e) => {
+  //   setRowsPerPage(Number(e.target.value));
+  //   setCurrentPage(1); 
+  // };
 
-  const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
+  // const handlePrev = () => {
+  //   if (currentPage > 1) setCurrentPage(currentPage - 1);
+  // };
 
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-  console.log([...Array(totalPages)]);
+  // const handleNext = () => {
+  //   if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  // };
+  // console.log([...Array(totalPages)]);
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+  // const handleSearchChange = (e) => {
+  //   setSearchQuery(e.target.value);
+  // };
 
   const column = useMemo(() => {
     return [
