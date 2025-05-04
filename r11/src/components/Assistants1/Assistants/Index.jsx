@@ -6,7 +6,8 @@ import {
   } from "reactstrap";
 import Navbar1 from './AssistantsHeader';
 import A from './Assistants';
-import Teams from './Teams';
+// import Teams from './Teams';
+import Teams from './Hello/Teams'
 import Assistants from './Assistants';
   
 function Index() {

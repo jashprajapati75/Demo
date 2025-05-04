@@ -6,7 +6,8 @@ import {
   } from "reactstrap";
 import AssistantsHeader from '../Assistants1/Assistants/AssistantsHeader';
 // import A from './Assistants';
-import Teams from '../Assistants1/Assistants/Teams';
+// import Teams from '../Assistants1/Assistants/Teams';
+import Teams from '../Assistants1/Assistants/Hello/Teams';
 import Assistants from '../Assistants1/Assistants/Assistants';
   
 function Index() {
