@@ -139,23 +139,6 @@ const BaseTable = ({
   const paginate = usePagination(defaultDataLength);
   const { page, setTotalPages, first, pageSize, changePageSize } = paginate;
 
-  // const [cachedGet, { data: tableData, isLoading }] = useLazyCachedGetQuery();
-
-  // const [
-  //   cachedGetHealthray,
-  //   { data: tableDataHealthray, isLoading: isGetting },
-  // ] = useHealthrayLazyCachedGetQuery();
-
-  // const [
-  //   noCachedGetHealthray,
-  //   { data: noCachedTableDataHealthray, isLoading: isNotCached },
-  // ] = useHealthrayLazyNoCachedQuery();
-
-  // const [
-  //   healthrayPostApi,
-  //   { data: postTableDataHealthray, isLoading: isGettingResponse },
-  // ] = useHealthrayPostMutation();
-
   const [isPending, setIsPending] = useState(false);
 
   const [isDragDisabled, setIsDragDisabled] = useState(false);
@@ -175,103 +158,6 @@ const BaseTable = ({
       setRowData(rowData);
     }
   }, [page, pageSize, paginationType, data, pagination]);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       if (
-  //         pagination &&
-  //         paginationType === "serverSide" &&
-  //         serverSidePaginationConfig.endpoint
-  //       ) {
-  //         setIsLoadingPagination(true);
-  //         const initialQuery = { page, per_page: pageSize.value };
-  //         const query = serverSidePaginationConfig.query || {};
-
-  //         const finalQuery = Object.entries({
-  //           ...initialQuery,
-  //           ...query,
-  //         }).reduce((result, [key, value]) => {
-  //           if (valuesToFilterForQuery.includes(value)) {
-  //             return result;
-  //           }
-
-  //           return {
-  //             ...result,
-  //             [key]: value,
-  //           };
-  //         }, {});
-  //         if (isHealthray) {
-  //           if (serverSidePaginationConfig.isPostApi) {
-  //             await healthrayPostApi({
-  //               endpoint: serverSidePaginationConfig.endpoint,
-  //               query: finalQuery,
-  //               tags: serverSidePaginationConfig.tags,
-  //               isToastify: false,
-  //             });
-  //           } else if (serverSidePaginationConfig.cached) {
-  //             await cachedGetHealthray({
-  //               endpoint: serverSidePaginationConfig.endpoint,
-  //               query: finalQuery,
-  //               tags: serverSidePaginationConfig.tags,
-  //             });
-  //           } else {
-  //             await noCachedGetHealthray({
-  //               endpoint: serverSidePaginationConfig.endpoint,
-  //               query: finalQuery,
-  //               tags: serverSidePaginationConfig.tags,
-  //             });
-  //           }
-  //         } else {
-  //           await cachedGet({
-  //             endpoint: serverSidePaginationConfig.endpoint,
-  //             query: finalQuery,
-  //             tags: serverSidePaginationConfig.tags,
-  //           });
-  //         }
-  //         setIsLoadingPagination(false);
-  //       }
-  //     } catch (error) {}
-  //   })();
-  // }, [
-  //   page,
-  //   pageSize,
-  //   pagination,
-  //   paginationType,
-  //   serverSidePaginationConfig.query,
-  // ]);
-
-  // useEffect(() => {
-  //   if (tableData?.data) {
-  //     setRowData(tableData.data);
-  //     setTotalPages(tableData.pages);
-  //     apiResponse(tableData);
-  //   }
-  // }, [tableData]);
-
-  // useEffect(() => {
-  //   if (tableDataHealthray?.data) {
-  //     setRowData(tableDataHealthray.data);
-  //     setTotalPages(tableDataHealthray.pages);
-  //     apiResponse(tableDataHealthray);
-  //   }
-  // }, [tableDataHealthray]);
-
-  // useEffect(() => {
-  //   if (noCachedTableDataHealthray?.data) {
-  //     setRowData(noCachedTableDataHealthray.data);
-  //     setTotalPages(noCachedTableDataHealthray.pages);
-  //     apiResponse(noCachedTableDataHealthray);
-  //   }
-  // }, [noCachedTableDataHealthray]);
-
-  // useEffect(() => {
-  //   if (postTableDataHealthray?.data) {
-  //     setRowData(postTableDataHealthray.data);
-  //     setTotalPages(postTableDataHealthray.pages);
-  //     apiResponse(postTableDataHealthray);
-  //   }
-  // }, [postTableDataHealthray]);
 
   useEffect(() => {
     registerResetPage(first);
@@ -323,16 +209,6 @@ const BaseTable = ({
     }
   };
 
-  // if (
-  //   isLoading ||
-  //   isGetting ||
-  //   isNotCached ||
-  //   isLoadingPagination ||
-  //   isGettingResponse
-  // ) {
-  //   return <Loader />;
-  // }
-
   return (
     <div
       className={isResponsive ? "table-responsive border rounded-3" : ""}
@@ -379,36 +255,18 @@ const BaseTable = ({
           </tr>
         </thead>
         {reorderable && reorderApi ? (
-          // <DragDropContext onDragEnd={onDragEnd}>
-            // <Droppable droppableId="droppable" direction="vertical">
-              // {(droppableProvided) => (
                 <tbody
                   className={bodyClassName}
-                  // {...droppableProvided.droppableProps}
-                  // ref={droppableProvided.innerRef}
                 >
                   {rowData.length ? (
                     rowData.map((item, index) => (
-                      // <Draggable
-                      //   key={item.id}
-                      //   draggableId={`${item.id}`}
-                      //   index={index}
-                      //   isDragDisabled={isPending || isDragDisabled}
-                      // >
-                        // {(draggableProvided, snapshot) => {
-                          // return (
                             <Row
                               rowClassName={rowClassName}
                               item={item}
                               columns={columns}
                               rowIndex={index}
                               page={page}
-                              // provided={draggableProvided}
-                              // snapshot={snapshot}
                             />
-                          // );
-                        // }}
-                      // </Draggable>
                     ))
                   ) : (
                     <tr>
@@ -417,11 +275,7 @@ const BaseTable = ({
                       </td>
                     </tr>
                   )}
-                  {/* {droppableProvided.placeholder} */}
                 </tbody>
-              // )}
-            // </Droppable>
-          // </DragDropContext>
         ) : (
           <tbody className={bodyClassName}>
             {rowData.length ? (

@@ -292,7 +292,7 @@ function Teams({ toggle, t }) {
             installsFilter={installsFilter}
             setInstallsFilter={setInstallsFilter}
             t={t}
-          />
+          />  
 
           {/* main */}
           <MainContent

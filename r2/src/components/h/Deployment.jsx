@@ -48,7 +48,7 @@ function Deployment({ t }) {
     (item) => item.name === activeTab
   )?.content;
   const [phoneModal, setPhoneModal] = useState(false);
-  const [buyModal, setBuyModal] = useState(false);
+  // const [buyModal, setBuyModal] = useState(false);
   // const [dropdownOpen, setDropdownOpen] = useState(false);
   // const [callerIds, setCallerIds] = useState([]);
   // const [callerIdModal, setCallerIdModal] = useState(false);
@@ -77,7 +77,7 @@ function Deployment({ t }) {
                   className=""
                 />
                 <Button
-                  className="btn bg-white text-muted border "
+                  className="btn bg-white text-muted border"
                   type="button"
                   onClick={togglePhoneModal}
                 >
@@ -111,14 +111,14 @@ function Deployment({ t }) {
           <div className="d-flex text-muted gap-2" style={{ fontSize: "12px" }}>
             <div className="d-flex">
               <span>Assistant ID:17...46200</span>
-              <Button className="bg-white border-white text-muted d-flex align-items-center p-0 ps-1">
+              <Button className="bg-white border-white text-muted d-flex align-items-center p-0 ps-1" onClick={()=>navigator.clipboard.writeText('Assistant ID')}>
                 <FaRegCopy size={12} />
               </Button>
             </div>
             <div className="border-start"></div>
             <div className="d-flex">
               <span>Api Key:17...46200</span>
-              <Button className="bg-white border-white text-muted d-flex align-items-center p-0 ps-1 ">
+              <Button className="bg-white border-white text-muted d-flex align-items-center p-0 ps-1 " onClick={()=>navigator.clipboard.writeText('Api key')}>
                 <FaRegCopy size={12} />
               </Button>
             </div>
